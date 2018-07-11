@@ -1,0 +1,13 @@
+README.html
+
+__pycache__/
+*.py[cod]
+
+*.out
+*.so
+*.o
+*.exe
+*.so.*
+
+*.bash_history
+*.python_history
