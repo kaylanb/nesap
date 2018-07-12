@@ -1,11 +1,11 @@
 EXE = hello.exe
-SRC_DIR= src
+SRC_DIR= src/c_python_openmp
 OBJ_DIR= obj
 CXX=g++
 FLAGS=-std=gnu++11
 FLAGSPY=-O3 -shared -std=gnu++11 -fPIC `python3-config --cflags --ldflags --libs`
 INCL= -I ./include
-PATHTOPY= -I ~/python_venvs/ml/include/site/python3.7
+PATHTOPY= -I ~/python3_venvs/ml/include/site/python3.7
 
 #########
 # C code
@@ -43,5 +43,5 @@ clean:
 # 	g++ -O3 -shared -std=gnu++11 -I ~/python_venvs/ml/include/site/python3.7 \
 # 	`python3-config --cflags --ldflags --libs` hello_funcs.cpp \
 # 	-o hello_funcs.so -fPIC
-hellopy: hello_funcs.cpp hello.h
-	$(CXX) $(FLAGSPY) $(PATHTOPY) -o hello_funcs.so hello_funcs.cpp
+hellopy: src/c_python_openmp/hello_funcs.cpp
+	$(CXX) $(FLAGSPY) $(INCL) $(PATHTOPY) -o hello_funcs.so src/c_python_openmp/hello_funcs.cpp
