@@ -1,6 +1,8 @@
 README.html
 
 __pycache__/
+*.egg
+*.egg-info
 *.py[cod]
 
 *.out
