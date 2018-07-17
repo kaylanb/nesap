@@ -1,16 +1,17 @@
 #FROM ubuntu:16.04
-FROM obiwan/py3:latest
+FROM obiwan/py3_srv:latest
 
 #RUN apt-get update && apt-get install -y \
 #    bionic
 
 #libcfitsio5 libcfitsio3
-RUN apt-get update && apt-get install -y \
+RUN source /srv/py3_venv/bin/activate && \
+    apt-get update && apt-get install -y \
     graphviz texlive-latex-extra dvipng \
     libnetpbm10 libnetpbm10-dev netpbm wcslib-dev \
     libz-dev swig \
     gsl-bin libgsl0-dev libboost-all-dev gfortran \
-    liblapack-dev libfftw3-dev scons curl python3-tk \
+    liblapack-dev libfftw3-dev scons curl wget python3-tk \
     libcairo2-dev libpng12-dev libjpeg-dev zlib1g-dev \
     libbz2-dev \
     gcc libgsl2 pkg-config libcfitsio3-dev
@@ -20,13 +21,14 @@ RUN apt-get update && apt-get install -y \
 ENV WCSLIB_INC "-I/usr/include/wcslib"
 ENV WCSLIB_LIB "-lwcs"
 
-ENV MYINSTALL=/root/myinstall
-ENV MYREPO=/root/myrepo
+ENV MYINSTALL /root/myinstall
+ENV MYREPO /root/myrepo
 RUN mkdir -p $MYINSTALL $MYREPO $MYREPO/dust/maps
 
 # /root/myrepo
 WORKDIR $MYREPO
-RUN curl -SL https://github.com/dstndstn/astrometry.net/releases/download/0.72/astrometry.net-0.72.tar.gz \
+RUN source /srv/py3_venv/bin/activate && \
+    curl -SL https://github.com/dstndstn/astrometry.net/releases/download/0.72/astrometry.net-0.72.tar.gz \
     -o astrometry.net.tar.gz && tar -xzf astrometry.net.tar.gz && \
     mv astrometry.net-0.72 astrometry.net && \
     cd astrometry.net && make install INSTALL_DIR=$MYINSTALL/astrometry && \
@@ -36,7 +38,8 @@ ENV PYTHONPATH $MYINSTALL/astrometry/lib/python:$PYTHONPATH
 ENV PATH $MYINSTALL/astrometry/lib/python/astrometry/util:$PATH
 ENV PATH $MYINSTALL/astrometry/lib/python/astrometry/blind:$PATH
 
-RUN curl -SL https://github.com/dstndstn/tractor/archive/dr5.2.tar.gz \
+RUN source /srv/py3_venv/bin/activate && \
+    curl -SL https://github.com/dstndstn/tractor/archive/dr5.2.tar.gz \
     -o tractor.tar.gz && tar -xzf tractor.tar.gz && \
     mv tractor-dr5.2 tractor && \
     cd tractor && make && \

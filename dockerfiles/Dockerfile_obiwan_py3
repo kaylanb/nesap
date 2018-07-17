@@ -1,5 +1,5 @@
-#FROM ubuntu:16.04
-FROM obiwan/py3:latest
+FROM ubuntu:16.04
+#FROM obiwan/py3:latest
 
 SHELL ["/bin/bash", "-c"]
 
@@ -7,7 +7,18 @@ RUN apt-get update && apt-get install -y \
     git \
     python3 \
     python3-pip \
+    python3-venv \
     && rm -rf /var/lib/apt/lists/*
 
+RUN python3 -m venv /srv/py3_venv
+
 COPY obiwan_py3_requirements.txt /tmp/
-RUN pip3 install --requirement /tmp/obiwan_py3_requirements.txt
+RUN source /srv/py3_venv/bin/activate && \
+    pip3 install --upgrade pip setuptools wheel && \
+    pip3 install --requirement /tmp/obiwan_py3_requirements.txt
+
+
+#
+COPY obiwan_py3_entrypoint.sh /
+ENTRYPOINT ["/obiwan_py3_entrypoint.sh"]
+#CMD ["/bin/bash"]

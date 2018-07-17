@@ -14,12 +14,11 @@ nose
 future
 pyyaml 
 ipython
-jupyter
 pytest-cov 
 coveralls 
 pytest-pep8
 pyfits
-fitsio
+#fitsio
 #--no-deps git+https://github.com/astropy/photutils.git 
 #-U pytest 
 #--no-deps --upgrade git+https://github.com/esheldon/fitsio.git#egg=fitsio

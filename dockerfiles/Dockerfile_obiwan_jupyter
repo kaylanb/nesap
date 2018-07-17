@@ -1,7 +1,24 @@
-#FROM ubuntu:16.04
-FROM obiwan/py3:latest
+#FROM obiwan/py3:latest
+FROM obiwan/py3_srv:latest
 
-#EXPOSE 80
-EXPOSE 77
+RUN source /srv/py3_venv/bin/activate && \
+    pip3 install --upgrade pip setuptools wheel && \
+    pip3 install jupyter ipywidgets npm && \
+    jupyter nbextension enable --py widgetsnbextension --sys-prefix
 
-CMD ["jupyter","notebook"]
+EXPOSE 8888
+
+COPY jupyter_notebook_config.py /root/.jupyter/
+
+# ENV NB_USER kdragon
+# ENV NB_UID 1000
+# ENV NB_GID 100
+# RUN mkdir /home/appuser && \
+#     fix-permissions /home/appuser
+# RUN groupadd -g 999 appuser && \
+#     useradd -r -u 999 -g appuser appuser
+# USER appuser
+
+COPY jupyter_entrypoint.sh /
+ENTRYPOINT ["/jupyter_entrypoint.sh"]
+#CMD ["jupyter","notebook"]
