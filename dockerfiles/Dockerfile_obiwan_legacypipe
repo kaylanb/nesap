@@ -61,10 +61,10 @@ RUN git clone https://github.com/legacysurvey/legacypipe.git && \
     cd legacypipe && git checkout f4fc46ea0b
 ENV PYTHONPATH $MYREPO/legacypipe/py:$PYTHONPATH
 
-WORKDIR $MYREPO
-RUN git clone https://github.com/legacysurvey/theValidator.git && \
-ENV PYTHONPATH $MYREPO/theValidator:$PYTHONPATH
+# WORKDIR $MYREPO
+# RUN git clone https://github.com/legacysurvey/theValidator.git
+# ENV PYTHONPATH $MYREPO/theValidator:$PYTHONPATH
 
-WORKDIR $MYREPO
-RUN git clone https://github.com/legacysurvey/obiwan.git
-ENV PYTHONPATH $MYREPO/obiwan/py:$PYTHONPATH
+# WORKDIR $MYREPO
+# RUN git clone https://github.com/legacysurvey/obiwan.git
+# ENV PYTHONPATH $MYREPO/obiwan/py:$PYTHONPATH
