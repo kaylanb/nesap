@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-#FROM obiwan/py3:latest
+#FROM kaylanb/py3:latest
 
 SHELL ["/bin/bash", "-c"]
 
@@ -12,13 +12,13 @@ RUN apt-get update && apt-get install -y \
 
 RUN python3 -m venv /srv/py3_venv
 
-COPY obiwan_py3_requirements.txt /tmp/
+COPY requirements_py3.txt /tmp/
 RUN source /srv/py3_venv/bin/activate && \
     pip3 install --upgrade pip setuptools wheel && \
-    pip3 install --requirement /tmp/obiwan_py3_requirements.txt
+    pip3 install --requirement /tmp/requirements_py3.txt
 
 
 #
-COPY obiwan_py3_entrypoint.sh /
-ENTRYPOINT ["/obiwan_py3_entrypoint.sh"]
+COPY entrypoint_py3.sh /
+ENTRYPOINT ["/entrypoint_py3.sh"]
 #CMD ["/bin/bash"]

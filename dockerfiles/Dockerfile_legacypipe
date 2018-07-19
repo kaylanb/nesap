@@ -1,8 +1,5 @@
 #FROM ubuntu:16.04
-FROM obiwan/py3_srv:latest
-
-#RUN apt-get update && apt-get install -y \
-#    bionic
+FROM kaylanb/py3
 
 #libcfitsio5 libcfitsio3
 RUN source /srv/py3_venv/bin/activate && \
@@ -17,6 +14,15 @@ RUN source /srv/py3_venv/bin/activate && \
     gcc libgsl2 pkg-config libcfitsio3-dev
 # libcfitsio-dev
 #libcfitsio3 libcfitsio3-dev
+
+COPY requirements_legacypipe.txt /tmp/
+RUN source /srv/py3_venv/bin/activate && \
+    pip3 install --upgrade pip setuptools wheel && \
+    pip3 install --requirement /tmp/requirements_legacypipe.txt && \
+    pip3 install --no-deps --upgrade git+https://github.com/esheldon/fitsio.git#egg=fitsio && \
+    pip3 install -v --no-deps --upgrade git+https://github.com/dstndstn/tractor.git
+
+
 
 ENV WCSLIB_INC "-I/usr/include/wcslib"
 ENV WCSLIB_LIB "-lwcs"
@@ -38,15 +44,16 @@ ENV PYTHONPATH $MYINSTALL/astrometry/lib/python:$PYTHONPATH
 ENV PATH $MYINSTALL/astrometry/lib/python/astrometry/util:$PATH
 ENV PATH $MYINSTALL/astrometry/lib/python/astrometry/blind:$PATH
 
-RUN source /srv/py3_venv/bin/activate && \
-    curl -SL https://github.com/dstndstn/tractor/archive/dr5.2.tar.gz \
-    -o tractor.tar.gz && tar -xzf tractor.tar.gz && \
-    mv tractor-dr5.2 tractor && \
-    cd tractor && make && \
-    python3 setup.py install --prefix=$MYINSTALL/tractor && \
-    cd ../ && rm -rf tractor
+# tractor
+# RUN source /srv/py3_venv/bin/activate && \
+#     curl -SL https://github.com/dstndstn/tractor/archive/dr5.2.tar.gz \
+#     -o tractor.tar.gz && tar -xzf tractor.tar.gz && \
+#     mv tractor-dr5.2 tractor && \
+#     cd tractor && make && \
+#     python3 setup.py install --prefix=$MYINSTALL/tractor && \
+#     cd ../ && rm -rf tractor
 
-ENV PYTHONPATH $MYINSTALL/tractor/lib/python3.5/site-packages:$PYTHONPATH
+# ENV PYTHONPATH $MYINSTALL/tractor/lib/python3.5/site-packages:$PYTHONPATH
 
 # Redundant
 WORKDIR $MYREPO
@@ -60,11 +67,3 @@ WORKDIR $MYREPO
 RUN git clone https://github.com/legacysurvey/legacypipe.git && \
     cd legacypipe && git checkout f4fc46ea0b
 ENV PYTHONPATH $MYREPO/legacypipe/py:$PYTHONPATH
-
-# WORKDIR $MYREPO
-# RUN git clone https://github.com/legacysurvey/theValidator.git
-# ENV PYTHONPATH $MYREPO/theValidator:$PYTHONPATH
-
-# WORKDIR $MYREPO
-# RUN git clone https://github.com/legacysurvey/obiwan.git
-# ENV PYTHONPATH $MYREPO/obiwan/py:$PYTHONPATH
