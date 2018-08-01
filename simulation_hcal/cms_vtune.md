@@ -190,7 +190,15 @@ mv cmssw/10824.0_TTbar_13+TTbar_13TeV_TuneCUETP8M1_2018_GenSimFull+DigiFull_2018
 #assume this one is step1
 mv hcal_config/TTbar_13TeV_TuneCUETP8M1_cfi_GEN_SIM.py hcal_config/step1_cfi_GEN_SIM.py
 ```
-Now you'll submit the following batch jobs to run steps 1-3. Running each step creates the output ROOT file that the next steps reads as input. Step 3 is the HCAL simulation. 
+
+## Compute Jobs at NERSC
+
+These two scripts submit a CMS comput job on NERSC machines
+
+- [job_cms_vtune.slurm](https://github.com/kaylanb/nesap/blob/master/simulation_hcal/job_cms_vtune.slurm) is the batch script
+- [job_cms.sh](https://github.com/kaylanb/nesap/blob/master/simulation_hcal/job_cms.sh) is the bash script that shifter runs which ends up running cmsRun on the Simulation HCAL module
+
+Now you'll submit three batch jobs to run steps 1-3. Running each step creates the output ROOT file that the next steps reads as input. Step 3 is the HCAL simulation. 
 ```
 cd $CSCRATCH/cms/rundir
 # edit job_cms.slurm and job_cms.sh to run "step1.py"
